@@ -2,7 +2,10 @@ import path from 'path';
 
 export default {
   debug: true,
+
+  // tool to generate source maps
   devtool: 'inline-source-map',
+
   noInfo: false,
   entry: [
     path.resolve(__dirname, 'src/index')
