@@ -4,11 +4,11 @@ import fs from 'fs';
 
 describe('index.html', () => {
 
-  it('shoudl say hello', (done) => {
+  it('shoudl have an h1 that says Users', (done) => {
     const index = fs.readFileSync('./src/index.html', 'utf-8');
     jsdom.env(index, (err, window) => {
       const h1 = window.document.getElementsByTagName('h1')[0];
-      expect(h1.innerHTML).to.equal('Hello world!');
+      expect(h1.innerHTML).to.equal('Users');
       done();
       window.close();
     });
