@@ -5,7 +5,7 @@ export default {
   debug: true,
 
   // tool to generate source maps
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
 
   noInfo: false,
   entry: {
@@ -14,16 +14,16 @@ export default {
   },
   target: 'web',
   output: {
-    path: path.resolve(__dirname, 'src'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: '[name].js'
   },
   plugins: [
-    // use CommonsChunkPlugin to create a separate bundle
-    // of vendor libraries so that they're catched separately
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    })
+    // eliminate duplicate package when generating the bundle
+    new webpack.optimize.DedupePlugin(),
+
+    // minify js
+    new webpack.optimize.UglifyJsPlugin()
   ],
   module: {
     loaders: [
