@@ -17,9 +17,15 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: '[name].js'
+    filename: '[name].js'  // use a placeholder because there are more than one *entry*
   },
   plugins: [
+    // Use CommonsChunkPlugin to create a separate bundle
+    // of vendor libraries so that they're cached separately
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    }),
+
     // create an html that references to bundled JS
     new HtmlWebpackPlugin({
       template: 'src/index.html',   // we'll use a template for this plugin
