@@ -37,7 +37,10 @@ export default {
     // create an html that references to bundled JS
     new HtmlWebpackPlugin({
       template: 'src/index.html',   // we'll use a template for this plugin
-      inject: true                  // webpakc will write <script> tags for us
+      inject: true,                 // webpakc will write <script> tags for us
+      // any property declared here are available on index.html
+      // using htmlWebpackPlugin.options.varName
+      trackJSToken: 'foobar'
     }),
 
     // eliminate duplicate package when generating the bundle
