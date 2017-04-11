@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WebpackMD5Hash from 'webpack-md5-hash';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export default {
   debug: true,
@@ -21,6 +22,9 @@ export default {
     filename: '[name].[chunkhash].js'  // use a placeholder because there are more than one *entry*, and add an MD5 hash
   },
   plugins: [
+    // Generate an external CSS file with a hash in the filename
+    new ExtractTextPlugin('[name].[chunkhash].css'),
+
     // Hash bundle files with MD5 so that their names change ONLY when content changes
     new WebpackMD5Hash(),
 
@@ -45,7 +49,7 @@ export default {
   module: {
     loaders: [
       {test: /\.js$/, exclude: /node_modules/, loaders: ['babel']},
-      {test: /\.css$/, loaders: ['style','css']}
+      {test: /\.css$/, loader: ExtractTextPlugin.extract('css?sourceMap') }
     ]
   }
 }
