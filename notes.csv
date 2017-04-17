@@ -1,0 +1,90 @@
+# You need a starter kit
+
+A starter kit (development environment) is an automated **checklist**
+
+Â¿Por quÃ© usar un checklist? Creemos que podemos memorizar todos los pasos, pero NO.
+
+Los desarrolladores saben quÃ© es lo que hay que hacer, pero bajo presiÃ³n o con las prisas es muy fÃ¡cil olvidar algÃºn paso
+
+Â¿QuÃ© deberÃ­a contener un entorno de desarrollo? package management, bundling, minification, sourcemaps, transpiling, dynamic html generation, centralized http, mock api framework, component libraries (your components), development webserver, linting, automated testing, continuous integration, automated build, automated deployment, working example app
+
+# Package managers
+
+JavaScript package managers:\n- bower: no goza de buena fama ahora, ya no se usa porque estaba pensado para la web si un paso de *compilaciÃ³n*\n- npm: la elecciÃ³n por defecto\n- jspm: acepta instalar dependencias de varias fuentes
+
+You should check your packages for security reasons (because anybody can upload things to `npm`).\n\nNode Security Platform is Cory's choice:\n\n`npm install -g nsp`\n`nsp check`
+
+# Development web server
+
+`express` as Development Web Server
+
+`localtunnel` as a tool to expose your local web server to the public. It creates a tunnel from a random URL (public) to your web server. Easy as a pie!!
+
+# Automation
+
+Automation tools: grunt (configuration over code), gulp (code over config, faster), npm scripts (use tools directly)
+
+# Transpiling
+
+Hay un par de paquetes/herramientas (babel-preset-***) que lo que hacen es mirar quÃ© versiÃ³n de NodeJS u otra plataforma (como Electron) estÃ¡s usando y evitar transpilar todo el cÃ³digo a ES5.1 AsÃ­ ahorra transpilar cierto cÃ³digo.
+
+# Linting
+
+5 decisiones que hay que tomar a la hora de empezar con ESLint:\n1. QuÃ© formato de configuraciÃ³n? package.json, .eslintrc, .eslintrc.js,...\n2. QuÃ© reglas usar?\n3. Cada regla, deberÃ­a lanzar un warning o un error?\n4. Plugins? para react, angular, node,...\n5. Y usar un preset?\nLas decisiones 2 y 3 es mejor tomarlas en equipo, para consensuarlas.
+
+# Testing and Continuous Integration
+
+6 decisiones a tomar a la hora de escribir tests unitarios:\n1. framework (mocha)\n2. librerÃ­a de aserciones (chai)\n3. libreÅ•ias de ayuda (jsdom)\n4. dÃ³nde ejecutarlos (node)\n5. dÃ³nde poner los ficheros de tests (alongside, together)\n6. cuÃ¡ndo ejecutarlos (on save)
+
+**jsdom**
+
+Un servidor de CI, entre otros beneficios, tiene el de **darse cuenta de los errores muy pronto** (normalmente antes que un humano).
+
+# HTTP calls
+
+Alternativas para hacer llamadas HTTP, dependiendo de la plataforma para la que estÃ©s programando:\n1. node: librerÃ­a `request`\n2. navegador: fetch (el estÃ¡ndar)\n3. ambos: librerÃ­a `axios`
+
+Best practice: centraliza tus llamadas a tu api:\n1. puedes configurar todas en un solo sitio\n2. manejo de errores\n3. un solo sitio donde mockear
+
+Plan para mockear HTTP:\n1. declarar el esquema de los datos (json schema faker)\n2. generar datos aleatorios: faker.js, chance.js o randexp.js\n3. servir los datos a travÃ©s de un api: json server
+
+# Project structure
+
+Project structure tips:\n1. Write JS code in .js files (do not use <script> tags). There won't be test, lint, reuse, transpile,...\n2. Consider organizing by feature (instead of by file type: components, data, models, views,...)\n3. Extract logic into POJOs (no framework code in your logic)
+
+# Production build
+
+Â¿por quÃ© es interesante tener un html un poco diferente en producciÃ³n que en desarrollo? puedes referenciar bundles automÃ¡ticamente, manejar distintos bundles dinÃ¡micamente, inyectar recursos especÃ­ficos para producciÃ³n, o minificar el html tambiÃ©n.
+
+Vamos a usar un plugin para webpack llamado "html-webpack-plugin"
+
+Â¿por quÃ© tener varios bundles? acelerar la carga de la pÃ¡gina inicial, evitar re-cargar todas las librerÃ­as (cuando hay un pequeÃ±o cambio en nuestro cÃ³digo)
+
+Â¿por que usar "bust cache"? Porque evitas que los navegadores te pregunten por nuevas versiones de tus bundles cacheados, acelerando la carga de la pagina.\n\nSe puede forzar a coger una nueva version haciendo que webpack genere el bundle con un nuevo y diferente nombre.
+
+Herramientas para detectar si hay un error de JS en producciÃ³n: track.js, sentry, new relic, raygun.
+
+QuÃ© buscar? Error metadata (browser, stack trace, previous actions), Notifications (email,...), Analitics and filtering, Pricing.
+
+EmbeddedJS es un motor de plantillas HTML por defecto en Webpack. Permite generar HTML mÃ¡s o menos dinÃ¡micamente en un paso de webpack.
+
+# Production deploy
+
+Production deploy, Ã©ste es el plan: separating UI from the API (client side from server side); hosting providers; automated deployment; handling starter kits updates;
+
+Â¿por quÃ© separar UI y API (cliente y servidor)? 1. es mas simple, UI solo despliega. 2. separa conceptos (equipos separados, menos para entender, escala back-end de forma separada) 3. UI es mÃ¡s barato de alojar (hosting) 4. Sirve UI desde un CDN. 5. PUede usar el lenguaje que quieras para el back-end
+
+Utiliza Heroku para desplegar su back-end
+
+el camino a producciÃ³n: desarrollo (npm start), empaquetado de producciÃ³n (npm run build), despliegue en producciÃ³n (npm run deploy) (en lo que trabajaremos ahora en el curso)
+
+para el despliegue del front-end, con ficheros estÃ¡ticos, usa Surge (http://surge.sh)
+
+Â¿cÃ³mo actualizar tu Starter Kit? yeoman, github, npm
+
+GitHub: fork your project, update with pull from the original project
+
+npm: encapsulate kit in an npm package. update npm package
+
+Â¿quÃ© se puede centralizar? vamos, Â¿quÃ© es lo que voy a tener que ir actualizando de proyecto en proyecto?\n1. build/ directory (usando npm package)\n2. npm scripts en package.json (usarÃ¡ npm package)\n3. webpack.config files (an npm package)\n4. eslintrc (crear un preset para poder compartirlo)
+
